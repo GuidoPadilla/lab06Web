@@ -1,0 +1,30 @@
+{
+  "name": "lab6",
+  "version": "1.0.0",
+  "description": "hola",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint *.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuidoPadilla/lab06Web.git"
+  },
+  "author": "GuidoPadilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuidoPadilla/lab06Web/issues"
+  },
+  "homepage": "https://github.com/GuidoPadilla/lab06Web#readme",
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  },
+  "dependencies": {
+    "eslint-plugin-html": "^6.1.2"
+  }
+}

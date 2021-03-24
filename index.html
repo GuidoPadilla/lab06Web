@@ -1,0 +1,94 @@
+<html>
+	
+    <head>
+		<style>
+		body,html {
+			padding: 0;
+			margin: 0;
+		}
+		
+		
+		</style>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script type="text/babel">
+            const htmlRoot = document.getElementById('root')
+            const MiBotonsote = ({ largo, alto, dificultad }) => {
+              const BotonStyle = {
+    display: 'flex',
+                width: '40%',
+                height: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    fontSize: '20px',
+    fontFamily: 'Impact,Charcoal,sans-serif',
+    border: '15px solid black',
+    backgroundImage: 'linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(103,69,102,1) 50%, rgba(33,33,185,0) 50%, rgba(231,11,11,1) 50%)',
+              }
+			  const ruta = `maze.html?largo=${largo}&alto=${alto}`
+
+			  const handleButttonClick = () => {
+    location.href = ruta
+			  }
+
+              return <button style={BotonStyle} href={ruta} onClick={handleButttonClick}>{dificultad}</button>
+            }
+
+            const Principal = () => {
+			  const principalStyle = {
+    display: 'flex',
+    width: '100vw',
+                height: '100vh',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundImage: 'url(https://assets.pokemon.com/assets/cms2-es-xl/img/misc/_tiles/25th/25th-anniversary-169.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+			  }
+
+			  const divStyle = {
+    display: 'flex',
+    width: '50%',
+                height: '50%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'column',
+			  }
+
+			  const textStyle = {
+    display: 'flex',
+    borderRadius: '50%',
+    fontFamily: 'Impact,Charcoal,sans-serif',
+    border: '15px solid black',
+    height: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '34px',
+    backgroundImage: 'linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(103,69,102,1) 50%, rgba(33,33,185,0) 50%, rgba(231,11,11,1) 50%)',
+			  }
+              return (
+                <div style={principalStyle}>
+      <div style={textStyle}>Bienvenido al juego, Seleccione una dificultad</div>
+      <div style={divStyle}>
+        <MiBotonsote largo={5} alto={5} dificultad="FACIL" />
+        <MiBotonsote largo={7} alto={7} dificultad="INTERMEDIO" />
+        <MiBotonsote largo={10} alto={10} dificultad="DIFICL" />
+      </div>
+                </div>
+              )
+            }
+
+            ReactDOM.render(
+              <Principal />,
+              htmlRoot,
+            )
+        </script>
+    </body>
+</html>

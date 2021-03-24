@@ -1,0 +1,242 @@
+<html>
+    <head>
+		<style>
+		body,html {
+			padding: 0;
+			margin: 0;
+		}
+		</style>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script type="text/babel">
+            const htmlRoot = document.getElementById('root')
+const Navegador = () => {
+  const SCREENS = {
+    END: (pasos) => (<PantallaFin pasos={pasos} />),
+    MAZE: () => (<Maze />),
+  }
+  const [screen, setScreen] = React.useState(SCREENS.MAZE)
+  const MiFigura = ({ tipo }) => {
+    const miSize = () => {
+      if (tipo === 'p') {
+        return 'contain'
+      }
+      return 'cover'
+    }
+    const direccion = () => {
+      switch (tipo) {
+        case 'p':
+          return 'https://media3.giphy.com/media/t6Kf2qs5fgWiAlOig5/giphy.gif'
+        case 'g':
+          return 'https://i.pinimg.com/originals/18/a9/e5/18a9e5331535924a8ae95923125109b0.png'
+        case ' ':
+          return 'https://www.ikea.com/sg/en/images/products/ekbacken-worktop-double-sided-with-white-edge-light-grey-white-laminate__0866572_pe516397_s5.jpg?f=s'
+        default:
+          return 'https://p7.hiclipart.com/preview/823/896/10/shrub-berry-8-bit-clip-art-pixel.jpg'
+      }
+    }
+    const style = {
+      backgroundImage: `url(${direccion(tipo)}) , url(https://www.ikea.com/sg/en/images/products/ekbacken-worktop-double-sided-with-white-edge-light-grey-white-laminate__0866572_pe516397_s5.jpg?f=s)`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: `${miSize(tipo)}, cover`,
+    }
+    return <div style={style} />
+  }
+  const Maze = () => {
+    const [mazeData, setMazeData] = React.useState([])
+    const [mazeTimes, setMazeTimes] = React.useState(0)
+    const mazeRef = React.createRef()
+    const [mazeFinish, setMazeFinish] = React.useState(false)
+    const w = (new URLSearchParams(window.location.search)).get('largo')
+    const h = (new URLSearchParams(window.location.search)).get('alto')
+
+    const posicion2d = (array, item) => {
+      for (let i = 0; i < array.length; i += 1) {
+        for (let j = 0; j < array[i].length; j += 1) {
+          if (array[i][j] === item) {
+                        return [i, j]
+          }
+        }
+      }
+      return []
+    }
+
+    const gridStyle = {
+      display: 'grid',
+      gridTemplateColumns: `repeat(${w * 3 + 1},${(100 / (w * 3 + 1)) - 0.1}vw)`,
+      gridTemplateRows: `repeat(${h * 2 + 1},${(100 / (h * 2 + 1)) - 0.11}vh)`,
+      justifyContent: 'strech',
+    }
+
+    React.useEffect(() => {
+      if (mazeData.length === 0) {
+        const url = `http://ubeje.xyz:3001/?type=json&w=${w}&h=${h}`
+        fetch(url)
+          .then((r) => r.json())
+          .then((r) => setMazeData(r))
+        mazeRef.current.focus()
+      }
+      if (mazeData.length !== 0) {
+        setMazeTimes(mazeTimes + 1)
+      }
+      if (mazeFinish === true) {
+        setScreen(SCREENS.END(mazeTimes))
+      }
+    }, [mazeData])
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowRight') {
+        setMazeData((oldValue) => {
+          const newValue = [...oldValue]
+          const playerPos = posicion2d(newValue, 'p')
+          if (newValue[playerPos[0]][playerPos[1] + 1] === 'g') {
+                        newValue[playerPos[0]][playerPos[1] + 1] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        setMazeFinish(!mazeFinish)
+                        return newValue
+          }
+          if (newValue[playerPos[0]][playerPos[1] + 1] === ' ') {
+                        newValue[playerPos[0]][playerPos[1] + 1] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        return newValue
+          }
+          return oldValue
+        })
+      }
+
+      if (event.key === 'ArrowUp') {
+        setMazeData((oldValue) => {
+          const newValue = [...oldValue]
+          const playerPos = posicion2d(newValue, 'p')
+          if (newValue[playerPos[0] - 1][playerPos[1]] === 'g') {
+                        newValue[playerPos[0] - 1][playerPos[1]] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        setMazeFinish(!mazeFinish)
+                        return newValue
+          }
+          if (newValue[playerPos[0] - 1][playerPos[1]] === ' ') {
+                        newValue[playerPos[0] - 1][playerPos[1]] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        return newValue
+          }
+          return oldValue
+        })
+      }
+
+      if (event.key === 'ArrowDown') {
+        setMazeData((oldValue) => {
+          const newValue = [...oldValue]
+          const playerPos = posicion2d(newValue, 'p')
+          if (newValue[playerPos[0] + 1][playerPos[1]] === 'g') {
+                        newValue[playerPos[0] + 1][playerPos[1]] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        setMazeFinish(!mazeFinish)
+                        return newValue
+          }
+          if (newValue[playerPos[0] + 1][playerPos[1]] === ' ') {
+                        newValue[playerPos[0] + 1][playerPos[1]] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        return newValue
+          }
+          return oldValue
+        })
+      }
+
+      if (event.key === 'ArrowLeft') {
+        setMazeData((oldValue) => {
+          const newValue = [...oldValue]
+          const playerPos = posicion2d(newValue, 'p')
+          if (newValue[playerPos[0]][playerPos[1] - 1] === 'g') {
+                        newValue[playerPos[0]][playerPos[1] - 1] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        setMazeFinish(!mazeFinish)
+                        return newValue
+          }
+          if (newValue[playerPos[0]][playerPos[1] - 1] === ' ') {
+                        newValue[playerPos[0]][playerPos[1] - 1] = 'p'
+                        newValue[playerPos[0]][playerPos[1]] = ' '
+                        return newValue
+          }
+          return oldValue
+        })
+      }
+    }
+
+    return (
+      <div tabIndex="0" style={gridStyle} onKeyDown={handleKeyDown} ref={mazeRef} role="menuitem">
+        {mazeData.map((row) => (
+          <>
+                        {row.map((cell) => <MiFigura tipo={cell} />)}
+          </>
+        ))}
+      </div>
+    )
+  }
+
+  const PantallaFin = ({ pasos }) => {
+    const finStyle = {
+      display: 'flex',
+      width: '100vw',
+      height: '100vh',
+      alignItems: 'center',
+      flexDirection: 'column',
+      backgroundImage: 'url(https://i.ytimg.com/vi/bIe7GfaYXoA/maxresdefault.jpg)',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+    }
+    const textoStyle = {
+      marginLeft: '20%',
+      top: '20%',
+      width: '35%',
+      fontFamily: 'Impact,Charcoal,sans-serif',
+      height: '55%',
+      fontSize: '34px',
+      borderRadius: '50%',
+      border: '8px solid black',
+      backgroundImage: 'linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(103,69,102,1) 50%, rgba(33,33,185,0) 50%, rgba(231,11,11,1) 50%)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
+
+    const contenedorStyle = {
+      justifyContent: 'flex-start',
+      top: '25%',
+      position: 'fixed',
+      width: '100%',
+      height: '100%',
+      flexDirection: 'row',
+      display: 'flex',
+    }
+    return (
+      <div style={finStyle}>
+        <div style={contenedorStyle}>
+          <div style={textoStyle}>
+                        Has ganado con
+                        {pasos}
+                        {' '}
+                        pasos!! Regresa para navegar a la pantalla inicial y volver a jugar
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {screen}
+    </div>
+  )
+}
+ReactDOM.render(
+  <Navegador />,
+  htmlRoot,
+            )
+        </script>
+    </body>
+</html>
