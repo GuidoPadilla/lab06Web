@@ -31,17 +31,17 @@
     border: '15px solid black',
     backgroundImage: 'linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(103,69,102,1) 50%, rgba(33,33,185,0) 50%, rgba(231,11,11,1) 50%)',
               }
-			  const ruta = `maze.html?largo=${largo}&alto=${alto}`
+  const ruta = `maze.html?largo=${largo}&alto=${alto}`
 
-			  const handleButttonClick = () => {
-    location.href = ruta
-			  }
+  const handleButttonClick = () => {
+    window.location.href = ruta
+  }
 
-              return <button style={BotonStyle} href={ruta} onClick={handleButttonClick}>{dificultad}</button>
+              return <button type="button" style={BotonStyle} href={ruta} onClick={handleButttonClick}>{dificultad}</button>
             }
 
             const Principal = () => {
-			  const principalStyle = {
+  const principalStyle = {
     display: 'flex',
     width: '100vw',
                 height: '100vh',
@@ -51,18 +51,18 @@
     backgroundImage: 'url(https://assets.pokemon.com/assets/cms2-es-xl/img/misc/_tiles/25th/25th-anniversary-169.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-			  }
+  }
 
-			  const divStyle = {
+  const divStyle = {
     display: 'flex',
     width: '50%',
                 height: '50%',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'column',
-			  }
+  }
 
-			  const textStyle = {
+  const textStyle = {
     display: 'flex',
     borderRadius: '50%',
     fontFamily: 'Impact,Charcoal,sans-serif',
@@ -72,7 +72,7 @@
     justifyContent: 'center',
     fontSize: '34px',
     backgroundImage: 'linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(103,69,102,1) 50%, rgba(33,33,185,0) 50%, rgba(231,11,11,1) 50%)',
-			  }
+  }
               return (
                 <div style={principalStyle}>
       <div style={textStyle}>Bienvenido al juego, Seleccione una dificultad</div>
